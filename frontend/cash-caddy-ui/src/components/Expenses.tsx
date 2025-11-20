@@ -1,9 +1,9 @@
 import React from 'react';
-import { deleteExpense } from '../services/api-factory';
+import { deleteExpense, type Expense } from '../services/api-factory';
 import './Expenses.css';
 
 interface ExpensesProps {
-  expenses: any[];
+  expenses: Expense[];
   onDelete: (id: string) => void;
 }
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { createExpense, updateExpense } from '../services/api-factory';
+import { createExpense, updateExpense, type Expense } from '../services/api-factory';
 import './ExpenseForm.css';
 
 interface ExpenseFormProps {
-  expense?: any;
-  onSave: (newExpense: any) => void;
+  expense?: Expense;
+  onSave: (newExpense: Expense) => void;
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onSave }) => {
