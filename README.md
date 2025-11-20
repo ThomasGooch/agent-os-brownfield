@@ -189,8 +189,32 @@ VITE_USE_GRPC=true
 npm run dev          # Development server
 npm run build        # Production build
 npm run lint         # ESLint check
-npm run proto:generate  # Generate TypeScript gRPC client
+npm run test         # Run unit tests
 ```
+
+### Protocol Buffer Code Generation
+
+#### Backend (Automatic)
+The backend automatically generates C# code from proto files during build:
+```bash
+cd backend/src/CashCaddy
+dotnet build  # Generates C# classes from expense.proto
+```
+
+#### Frontend (Manual when proto changes)
+```bash
+cd frontend/cash-caddy-ui
+# Install dependencies first
+npm install ts-proto @bufbuild/protobuf
+
+# Generate TypeScript code from proto
+protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto \
+  --ts_proto_out=src/generated \
+  --ts_proto_opt=env=browser,outputServices=generic-definitions,esModuleInterop=true \
+  -I=src/protos expense.proto
+```
+
+**Note:** Generated files are committed to git for CI/CD compatibility.
 
 ### Backend
 ```bash
