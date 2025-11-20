@@ -17,7 +17,9 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onSave }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    // Remove commas and other formatting from amount input
+    const sanitizedValue = name === 'amount' ? value.replace(/,/g, '') : value;
+    setFormData({ ...formData, [name]: sanitizedValue });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,7 +47,15 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onSave }) => {
       </div>
       <div>
         <label>Amount</label>
-        <input type="number" name="amount" value={formData.amount} onChange={handleChange} />
+        <input 
+          type="number" 
+          name="amount" 
+          value={formData.amount} 
+          onChange={handleChange} 
+          step="0.01"
+          min="0"
+          placeholder="0.00"
+        />
       </div>
       <div>
         <label>Description</label>
