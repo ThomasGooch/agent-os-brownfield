@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "v2UbgXg86qNUml9JBLjWlz8Dtf/OmV9TVO/kcf5kbng=",
+  "Source": "CashCaddy.API",
+  "BasePath": "_content/CashCaddy.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
