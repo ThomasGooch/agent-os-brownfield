@@ -10,7 +10,7 @@ import {
   type ExpenseMessage
 } from '../generated/expense';
 
-const grpcUrl = 'http://localhost:5001';
+const grpcUrl = import.meta.env.VITE_GRPC_URL || 'http://localhost:5001';
 
 export interface Expense {
   id: string;
