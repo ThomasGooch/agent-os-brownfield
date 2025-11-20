@@ -1,4 +1,4 @@
-import { ExpenseServiceClient, type ExpenseMessage, type CreateExpenseRequest, type UpdateExpenseRequest } from '../generated/expense_grpc_web_pb.js';
+import { ExpenseServiceClient, type ExpenseMessage, type CreateExpenseRequest, type UpdateExpenseRequest } from '../generated/expense_grpc_web_pb';
 
 const grpcUrl = 'http://localhost:5001';
 const client = new ExpenseServiceClient(grpcUrl);
