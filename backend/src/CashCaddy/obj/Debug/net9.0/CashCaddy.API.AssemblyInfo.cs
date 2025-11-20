@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CashCaddy.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d742b1307f179e337ad7f203890e888641f381fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35fe1de17540e32e0f6156d22c0a24e95be16bf6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CashCaddy.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CashCaddy.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

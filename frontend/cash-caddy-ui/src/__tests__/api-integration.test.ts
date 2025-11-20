@@ -3,6 +3,53 @@ import * as api from '../services/api';
 import * as grpcApi from '../services/grpc-api';
 import * as apiFactory from '../services/api-factory';
 
+// Mock axios for REST API
+vi.mock('axios', () => ({
+  default: {
+    get: vi.fn().mockResolvedValue({ data: [] }),
+    post: vi.fn().mockResolvedValue({ 
+      data: { 
+        id: '123e4567-e89b-12d3-a456-426614174000',
+        date: '2025-11-20',
+        amount: 50,
+        description: 'Test',
+        category: 'Food'
+      }
+    }),
+    put: vi.fn().mockResolvedValue({ data: {} }),
+    delete: vi.fn().mockResolvedValue({ data: {} })
+  }
+}));
+
+// Mock fetch for gRPC with proper response format
+global.fetch = vi.fn().mockImplementation((url: string) => {
+  // Mock response based on the endpoint
+  if (url.includes('GetExpenses')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ expenses: [] })
+    });
+  } else if (url.includes('CreateExpense')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ 
+        expense: {
+          id: '123e4567-e89b-12d3-a456-426614174000',
+          date: '2025-11-20',
+          amount: 50,
+          description: 'Test',
+          category: 'Food'
+        }
+      })
+    });
+  }
+  // Default response
+  return Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({})
+  });
+});
+
 // Mock the environment variable
 const mockEnv = (useGrpc: boolean) => {
   vi.stubGlobal('import.meta', {
@@ -54,16 +101,19 @@ describe('gRPC API Client', () => {
     expect(typeof grpcApi.deleteExpense).toBe('function');
   });
 
-  it('should match REST API interface for getExpenses', () => {
+  it('should match REST API interface for getExpenses', async () => {
     // Both should return Promise<Expense[]>
     const restReturn = api.getExpenses();
     const grpcReturn = grpcApi.getExpenses();
     
     expect(restReturn).toBeInstanceOf(Promise);
     expect(grpcReturn).toBeInstanceOf(Promise);
+    
+    // Wait for promises to resolve (mocked)
+    await Promise.allSettled([restReturn, grpcReturn]);
   });
 
-  it('should match REST API interface for createExpense', () => {
+  it('should match REST API interface for createExpense', async () => {
     const testExpense = {
       date: '2025-11-20',
       amount: 50,
@@ -76,6 +126,9 @@ describe('gRPC API Client', () => {
     
     expect(restReturn).toBeInstanceOf(Promise);
     expect(grpcReturn).toBeInstanceOf(Promise);
+    
+    // Wait for promises to resolve (mocked)
+    await Promise.allSettled([restReturn, grpcReturn]);
   });
 });
 
