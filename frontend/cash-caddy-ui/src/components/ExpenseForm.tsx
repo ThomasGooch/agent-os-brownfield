@@ -22,11 +22,17 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onSave }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const expenseData = {
+      date: formData.date,
+      amount: Number(formData.amount),
+      description: formData.description,
+      category: formData.category,
+    };
     let newExpense;
     if (expense) {
-      newExpense = await updateExpense(expense.id, formData);
+      newExpense = await updateExpense(expense.id, expenseData);
     } else {
-      newExpense = await createExpense(formData);
+      newExpense = await createExpense(expenseData);
     }
     onSave(newExpense);
   };
