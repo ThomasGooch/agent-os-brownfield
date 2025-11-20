@@ -1,5 +1,5 @@
 import React from 'react';
-import { deleteExpense } from '../services/api';
+import { deleteExpense } from '../services/api-factory';
 import './Expenses.css';
 
 interface ExpensesProps {

@@ -16,6 +16,9 @@ builder.Services.AddDbContext<ExpenseDbContext>(options =>
 // Register the repository
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
+// Add gRPC services
+builder.Services.AddGrpc();
+
 // Add CORS services
 builder.Services.AddCors(options =>
 {
@@ -23,7 +26,8 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:5173")
                .AllowAnyHeader()
-               .AllowAnyMethod();
+               .AllowAnyMethod()
+               .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
     });
 });
 
@@ -31,6 +35,9 @@ var app = builder.Build();
 
 // Use CORS
 app.UseCors();
+
+// Use gRPC-Web (must be after UseRouting and before UseEndpoints)
+app.UseGrpcWeb();
 
 // Apply migrations at startup
 using (var scope = app.Services.CreateScope())
@@ -48,6 +55,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+// Map gRPC service with gRPC-Web enabled
+app.MapGrpcService<ExpenseGrpcService>().EnableGrpcWeb();
 
 // Map minimal APIs for CRUD operations on expenses
 app.MapGet("/expenses", async (IExpenseRepository repository) =>

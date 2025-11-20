@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg';
 import './App.css';
 import Expenses from './components/Expenses';
 import ExpenseForm from './components/ExpenseForm';
-import { getExpenses } from './services/api';
+import { getExpenses } from './services/api-factory';
 
 function App() {
   const [showForm, setShowForm] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createExpense, updateExpense } from '../services/api';
+import { createExpense, updateExpense } from '../services/api-factory';
 import './ExpenseForm.css';
 
 interface ExpenseFormProps {
