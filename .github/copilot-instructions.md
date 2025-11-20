@@ -4,10 +4,12 @@ This repository uses **agent-os** - a structured workflow system for planning, s
 
 ## Project Context
 
-- **Frontend**: React 19 + TypeScript + Vite (port 5173)
-- **Backend**: .NET 9 Web API with minimal APIs + Entity Framework Core (port 5000)
-- **Database**: PostgreSQL with EF migrations
+- **Frontend**: React 19 + TypeScript + Vite (port 5173) with REST + gRPC-Web support
+- **Backend**: .NET 9 Web API with minimal APIs (port 5000) + gRPC services (port 5001) + Entity Framework Core
+- **Database**: PostgreSQL 16 with EF migrations
 - **Container**: Docker Compose multi-service setup
+- **Communication**: Dual protocol support - REST (HTTP/1.1 JSON) and gRPC (HTTP/2 Protobuf)
+- **Feature Flag**: VITE_USE_GRPC environment variable for runtime protocol switching (default: false)
 
 ## Agent-OS Command System
 

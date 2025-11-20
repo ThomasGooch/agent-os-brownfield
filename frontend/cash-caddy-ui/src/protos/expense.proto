@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option csharp_namespace = "CashCaddy.API.Protos";
+
+package expense;
+
+// Service definition for expense operations
+service ExpenseService {
+  // Get all expenses
+  rpc GetExpenses (GetExpensesRequest) returns (GetExpensesResponse);
+  
+  // Get a single expense by ID
+  rpc GetExpense (GetExpenseRequest) returns (ExpenseResponse);
+  
+  // Create a new expense
+  rpc CreateExpense (CreateExpenseRequest) returns (ExpenseResponse);
+  
+  // Update an existing expense
+  rpc UpdateExpense (UpdateExpenseRequest) returns (ExpenseResponse);
+  
+  // Delete an expense
+  rpc DeleteExpense (DeleteExpenseRequest) returns (DeleteExpenseResponse);
+}
+
+// Message representing an expense
+message ExpenseMessage {
+  string id = 1;
+  string date = 2;
+  double amount = 3;
+  string description = 4;
+  string category = 5;
+}
+
+// Request/Response messages for GetExpenses
+message GetExpensesRequest {
+  // Empty for now - could add filtering/pagination later
+}
+
+message GetExpensesResponse {
+  repeated ExpenseMessage expenses = 1;
+}
+
+// Request/Response messages for GetExpense
+message GetExpenseRequest {
+  string id = 1;
+}
+
+message ExpenseResponse {
+  ExpenseMessage expense = 1;
+}
+
+// Request message for CreateExpense
+message CreateExpenseRequest {
+  string date = 1;
+  double amount = 2;
+  string description = 3;
+  string category = 4;
+}
+
+// Request message for UpdateExpense
+message UpdateExpenseRequest {
+  string id = 1;
+  string date = 2;
+  double amount = 3;
+  string description = 4;
+  string category = 5;
+}
+
+// Request/Response messages for DeleteExpense
+message DeleteExpenseRequest {
+  string id = 1;
+}
+
+message DeleteExpenseResponse {
+  bool success = 1;
+  string message = 2;
+}

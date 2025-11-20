@@ -1,31 +1,36 @@
-// filepath: /Users/thomas.gooch/Projects/POC/CashCaddy/frontend/cash-caddy-ui/src/api.ts
-
 import axios from 'axios';
 
-// const backendUrl = process.env.REACT_APP_BACKEND_URL;
-const backendUrl = "http://localhost:5000"
+const backendUrl = "http://localhost:5000";
 
-export const getExpenses = async () => {
+export interface Expense {
+  id: string;
+  date: string;
+  amount: number;
+  description: string;
+  category: string;
+}
+
+export const getExpenses = async (): Promise<Expense[]> => {
   const response = await axios.get(`${backendUrl}/expenses`);
   return response.data;
 };
 
-export const getExpenseById = async (id: string) => {
+export const getExpenseById = async (id: string): Promise<Expense> => {
   const response = await axios.get(`${backendUrl}/expenses/${id}`);
   return response.data;
 };
 
-export const createExpense = async (expense: any) => {
+export const createExpense = async (expense: Omit<Expense, 'id'>): Promise<Expense> => {
   const response = await axios.post(`${backendUrl}/expenses`, expense);
   return response.data;
 };
 
-export const updateExpense = async (id: string, expense: any) => {
+export const updateExpense = async (id: string, expense: Omit<Expense, 'id'>): Promise<Expense> => {
   const response = await axios.put(`${backendUrl}/expenses/${id}`, expense);
   return response.data;
 };
 
-export const deleteExpense = async (id: string) => {
+export const deleteExpense = async (id: string): Promise<void> => {
   const response = await axios.delete(`${backendUrl}/expenses/${id}`);
   return response.data;
 };

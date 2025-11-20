@@ -9,6 +9,7 @@ services:
       - "5173:5173"
     environment:
       - REACT_APP_BACKEND_URL=http://backend:5000
+      - VITE_USE_GRPC=false
 
   backend:
     build:
@@ -16,6 +17,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:8080"
+      - "5001:5001"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=postgres;Username=postgres;Password=Pos19453055
@@ -23,7 +25,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:latest
+    image: postgres:16
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres

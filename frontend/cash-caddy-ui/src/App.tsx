@@ -4,11 +4,11 @@ import viteLogo from '/vite.svg';
 import './App.css';
 import Expenses from './components/Expenses';
 import ExpenseForm from './components/ExpenseForm';
-import { getExpenses } from './services/api';
+import { getExpenses, type Expense } from './services/api-factory';
 
 function App() {
   const [showForm, setShowForm] = useState(false);
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
 
   useEffect(() => {
     fetchExpenses();
@@ -19,7 +19,7 @@ function App() {
     setExpenses(data);
   };
 
-  const handleSave = (newExpense: any) => {
+  const handleSave = (newExpense: Expense) => {
     setExpenses([...expenses, newExpense]);
     setShowForm(false);
   };
