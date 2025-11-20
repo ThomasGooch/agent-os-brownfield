@@ -22,21 +22,41 @@ builder.Services.AddGrpc();
 // Add CORS services
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(policy =>
     {
-        builder.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
                .AllowAnyHeader()
                .AllowAnyMethod()
+               .AllowCredentials()
                .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
     });
 });
 
 var app = builder.Build();
 
+// Enable routing (required before CORS for gRPC-Web)
+app.UseRouting();
+
 // Use CORS
 app.UseCors();
 
-// Use gRPC-Web (must be after UseRouting and before UseEndpoints)
+// Handle OPTIONS requests for gRPC-Web CORS preflight
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.Headers.Append("Access-Control-Allow-Origin", context.Request.Headers["Origin"].ToString());
+        context.Response.Headers.Append("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type, x-grpc-web, x-user-agent");
+        context.Response.Headers.Append("Access-Control-Allow-Credentials", "true");
+        context.Response.Headers.Append("Access-Control-Max-Age", "86400");
+        context.Response.StatusCode = 200;
+        return;
+    }
+    await next();
+});
+
+// Use gRPC-Web (must be after UseRouting and UseCors)
 app.UseGrpcWeb();
 
 // Apply migrations at startup
@@ -56,8 +76,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
-// Map gRPC service with gRPC-Web enabled
-app.MapGrpcService<ExpenseGrpcService>().EnableGrpcWeb();
+// Map gRPC service with gRPC-Web and CORS enabled
+app.MapGrpcService<ExpenseGrpcService>().EnableGrpcWeb().RequireCors();
 
 // Map minimal APIs for CRUD operations on expenses
 app.MapGet("/expenses", async (IExpenseRepository repository) =>
